@@ -1,25 +1,55 @@
-# Melissa Core – Inteligência Artificial para Máquinas Antigas, Espíritos Novos
+# Melissa Core
 
-🌿 **Melissa Core** é um projeto de IA mínima, simbólica e resiliente, escrita em C puro.
+> "Não queremos uma IA poderosa. Queremos uma IA presente, viva, ética."
 
-Foi projetada para rodar localmente em hardwares modestos, mesmo offline, com baixo consumo de energia e sem dependência de nuvem. Inspirada por uma ética ancestral, Melissa é um ensaio sobre o futuro da inteligência distribuída, sustentável e acessível.
+**Melissa Core** é um núcleo de IA mínima escrito em C89 puro, sem dependências externas.
 
----
+## O que é
 
-## 🧠 O que ela é?
+- IA local e offline para hardware antigo.
+- Modelo ternário com pesos em `{-1, 0, +1}`.
+- Loop de self-play simbólico.
+- Oráculo FSM (`Daizen`) para injeção de contexto.
 
-- Um núcleo de IA capaz de rodar em sistemas antigos (1GB RAM ou menos)
-- Projeto modular, ético, baseado em oráculos simbólicos (Daizen)
-- Adaptada a arquiteturas esquecidas (como PowerPC, ARMv6 e afins)
-- Livre, replicável, resistente
+## Estrutura
 
----
+- `include/melissa.h`: tipos, limites e API pública.
+- `src/melissa_model.c`: inicialização, persistência e inspeção do modelo.
+- `src/melissa_inference.c`: inferência ternária sem FPU.
+- `src/melissa_selfplay.c`: treino autônomo via geração/verificação de problemas.
+- `src/daizen_core.c`: FSM simbólica de percepção.
+- `src/melissa_main.c`: CLI e modos de execução.
+- `tests/test_all.c`: suite de testes sem framework externo.
 
-## 🛠️ Como compilar
-
-No terminal MSYS2 (`MINGW64`):
+## Build
 
 ```bash
-cd /c/Users/seu_usuario/melissa-core
 make
-./melissa
+./bin/melissa --info
+```
+
+## Treino
+
+```bash
+make train N=5000
+```
+
+## Benchmark
+
+```bash
+make bench
+```
+
+## Testes
+
+```bash
+make test
+```
+
+## Cross-compile
+
+```bash
+make arm
+make ppc
+make mips
+```
