@@ -23,3 +23,26 @@ No terminal MSYS2 (`MINGW64`):
 cd /c/Users/seu_usuario/melissa-core
 make
 ./melissa
+```
+
+## 🔒 Uso ético e segurança
+
+Melissa Core **não** deve ser usada para:
+
+- varredura/invasão de redes sem autorização explícita;
+- persistência oculta em roteadores, IoT ou dispositivos de terceiros;
+- autopropagação, worming, backdoors ou técnicas de ofuscação maliciosa.
+
+Uso recomendado:
+
+- laboratório local e redes próprias, com consentimento;
+- pesquisa acadêmica, arte computacional e educação;
+- hardening defensivo (inventário, atualização de firmware e monitoramento).
+
+Se você quer aplicar Melissa em roteadores antigos, faça isso com segurança:
+
+1. Atualize o firmware (OpenWRT/LEDE) para versão estável.
+2. Troque credenciais padrão e desative administração remota WAN.
+3. Restrinja SSH por chave e por IP de gerenciamento.
+4. Ative firewall com política default-deny para entrada.
+5. Mantenha logs e backups antes de qualquer experimento.
