@@ -1,0 +1,49 @@
+[general]
+data_dir   = "./data"
+log_level  = "INFO"
+language   = "auto"
+
+[embedding]
+model      = "sentence-transformers/all-MiniLM-L6-v2"
+use_onnx   = true
+dimensions = 384
+batch_size = 32
+device     = "cpu"
+
+[chunker]
+target_tokens    = 1000
+overlap_tokens   = 100
+min_chunk_tokens = 50
+sentence_splitter = "nltk"
+
+[faiss]
+index_type = "IVF256,PQ32"
+nprobe     = 10
+
+[memory]
+hot_max_chunks      = 5000
+warm_max_chunks     = 50000
+cold_compress_level = 19
+
+[whisper]
+model_size = "tiny"
+language   = "auto"
+
+[scheduler]
+enabled             = true
+idle_cpu_threshold  = 10
+max_cpu_pct         = 10
+max_ram_mb          = 512
+use_gpu_on_idle     = false
+check_interval_sec  = 60
+
+[governance]
+log_queries              = true
+log_compressions         = true
+log_adapter_updates      = true
+require_adapter_approval = true
+
+[web_memory]
+enabled                = false
+respect_robots_txt     = true
+max_pages_per_session  = 50
