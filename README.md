@@ -123,3 +123,30 @@ No terminal MSYS2 (`MINGW64`):
 cd /c/Users/seu_usuario/melissa-core
 make
 ./melissa
+```
+
+## Fase 2: Memory Tiers (Python)
+
+A integração da Fase 2 adiciona uma camada de memória hierárquica com compatibilidade de API.
+
+```python
+from src.melissa import MelissaFase2Integrator, DeploymentRecipes
+
+async def embedder(text: str):
+    return [float(len(text) % 7), 1.0, 0.5]
+
+memory = MelissaFase2Integrator(embedder, DeploymentRecipes.production())
+await memory.add("chunk-1", "conteúdo")
+results = await memory.search("consulta", k=10)
+```
+
+- Hot tier (vetorial em memória): baixa latência.
+- Warm tier (comprimido): equilíbrio custo/latência.
+- Cold tier (arquivo comprimido): retenção longa com busca textual.
+
+Arquivos da Fase 2:
+- `src/fase2/melissa_core_fase2_memory_tiers.py`
+- `src/fase2/melissa_core_fase2_compression_bench.py`
+- `src/fase2/melissa_core_fase2_integration.py`
+- `src/fase2/FASE2_SPEC.md`
+- `src/fase2/FASE2_INTEGRATION_CHECKLIST.md`
