@@ -1,0 +1,29 @@
+
+version: "3.9"
+
+services:
+  melissacore:
+    build: .
+    container_name: melissacore
+    volumes:
+      - ./data:/app/data
+      - ./.melissa_model_cache:/app/.melissa_model_cache
+      - ./config.toml:/app/config.toml:ro
+    ports:
+      - "8000:8000"
+    cpus: "2.0"
+    mem_limit: 2g
+    restart: unless-stopped
+
+  idle-agent:
+    build: .
+    container_name: melissacore-idle
+    command: python -m src.scheduler.idle_agent
+    volumes:
+      - ./data:/app/data
+      - ./.melissa_model_cache:/app/.melissa_model_cache
+      - ./config.toml:/app/config.toml:ro
+    cpus: "0.5"
+    mem_limit: 512m
+    restart: unless-stopped
+    profiles: ["idle"]

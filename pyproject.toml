@@ -1,0 +1,70 @@
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "melissacore"
+version = "0.1.0"
+description = "RAG-lite personal memory engine with adapter-based personality — local, offline, CPU-first"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+dependencies = [
+    "pdfminer.six>=20221105",
+    "pypdf>=3.0",
+    "pytesseract>=0.3.10",
+    "Pillow>=10.0",
+    "trafilatura>=1.6",
+    "ebooklib>=0.18",
+    "openai-whisper>=20231117",
+    "ffmpeg-python>=0.2.0",
+    "nltk>=3.8",
+    "langdetect>=1.0.9",
+    "sentence-transformers>=2.7",
+    "optimum[onnxruntime]>=1.18",
+    "onnxruntime>=1.17",
+    "numpy>=1.26",
+    "faiss-cpu>=1.8",
+    "zstandard>=0.22",
+    "python-magic>=0.4.27",
+    "xxhash>=3.4",
+    "lmdb>=1.4",
+    "sqlitedict>=2.1",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "tomli>=2.0; python_version < '3.11'",
+    "pydantic>=2.5",
+    "pydantic-settings>=2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=4.1",
+    "ruff>=0.3",
+    "mypy>=1.8",
+    "ipykernel>=6.29",
+]
+personality = [
+    "peft>=0.10",
+    "transformers>=4.40",
+    "torch>=2.2",
+    "accelerate>=0.28",
+]
+
+[project.scripts]
+melissa-ingest = "scripts.ingest_pdf:main"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
