@@ -1,0 +1,37 @@
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff
+      - run: ruff check src/ scripts/ tests/
+      - run: ruff format --check src/ scripts/ tests/
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: sudo apt-get install -y tesseract-ocr ffmpeg
+      - run: pip install -e ".[dev]"
+      - run: python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab')"
+      - run: pytest tests/ -m "not slow" --cov=src --cov-report=xml -v
+      - uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
