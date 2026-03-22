@@ -1,13 +1,12 @@
 Melissa Core – Inteligência Artificial para Máquinas Antigas, Espíritos Novos
 
-Melissa Coreé um projeto de IA mínima, simbólica e resiliente, escrita em C puro.
+Melissa Core é um projeto de IA mínima, simbólica e resiliente, escrita em C puro.
 
-Foi projetada para rodar localmente em hardwares modestos, mesmo offline, com baixo consumo de energia e sem dependência de nuvem.
-Inspirada por uma ética ancestral, Melissa é um ensaio sobre o futuro da inteligência distribuída, sustentável e acessível.
+Foi projetada para rodar localmente em hardwares modestos, mesmo offline, com baixo consumo de energia e sem dependência de nuvem. Inspirada por uma ética ancestral, Melissa é um ensaio sobre o futuro da inteligência distribuída, sustentável e acessível.
 
 ---
 
-O que ela é?
+## O que ela é?
 
 - Um núcleo de IA capaz de rodar em sistemas antigos (1GB RAM ou menos)
 - Projeto modular, ético, baseado em oráculos simbólicos (Daizen)
@@ -16,110 +15,120 @@ O que ela é?
 
 ---
 
-Melissa Core
+## O que este fork adiciona
 
-"Não queremos uma IA poderosa. Queremos uma IA presente, viva, ética.
-Queremos Melissa em máquinas esquecidas, como oráculo na tempestade.
-Este projeto é para os que acreditam que inteligência pode florescer
-em 1GB de RAM — e que dignidade não exige 64 núcleos."
+Este fork implanta um módulo **Enochian** em C puro para transformar o Melissa Core em um núcleo pronto para comunicação simbólica entre agentes locais. A nova camada segue a mesma filosofia do projeto: sem dependências externas, com estruturas pequenas, funcionamento offline e foco em portabilidade.
 
+### Novo layout
 
-O que é
-Melissa Core é um núcleo de IA mínima escrito em C puro, sem dependências externas.
-Ela roda localmente, offline, em hardware antigo, com consumo energético muito baixo.
-O núcleo de aprendizagem usa modelos ternários de 1.58 bits (pesos em {-1, 0, +1})
-inspirados em BitNet, combinados com um loop de self-play simbólico inspirado no
-paradigma Absolute Zero — sem precisar de dados externos, sem cloud, sem GPU.
-
-Arquitetura
+```text
 melissa-core/
 ├── include/
-│   ├── melissa_model.h      # estrutura do modelo ternário 1.58-bit
-│   ├── daizen.h             # oráculo simbólico (geração + verificação)
-│   └── melissa_selfplay.h   # loop de auto-aprendizagem
+│   ├── melissa.h
+│   └── enochian/
+│       ├── enochian_token.h
+│       ├── enochian_consensus.h
+│       ├── enochian_evolution.h
+│       └── enochian_bridge.h
 ├── src/
-│   ├── melissa_model.c      # inferência ternária + persistência
-│   ├── daizen.c             # 4 domínios simbólicos de problemas
-│   ├── melissa_selfplay.c   # ciclo propositor→solucionador→verificador
-│   └── melissa.c            # main + CLI
+│   ├── melissa_tokenizer.c
+│   └── enochian/
+│       ├── enochian_token.c
+│       ├── enochian_consensus.c
+│       ├── enochian_evolution.c
+│       └── enochian_bridge.c
 ├── tests/
-│   └── test_model.c         # testes unitários
+│   └── test_enochian.c
 └── Makefile
-Módulos
-MóduloResponsabilidademelissa_modelPesos 2-bit empacotados, forward sem FPU, atualização estocásticadaizenGera problemas simbólicos, verifica respostas deterministicamentemelissa_selfplayLoop de treino autônomo: gera → resolve → avalia → aprende
+```
 
-Compilar
-Nativo (Linux / macOS / MSYS2)
-bashmake
-./melissa --help
-Hardware antigo (cross-compile)
-bash# Raspberry Pi 1 / Pi Zero (ARMv6)
-make arm
+## Módulo Enochian
 
-# iBook G4 / Mac Mini G4 (PowerPC)
-make ppc
+### `enochian_token`
 
-# Roteadores OpenWRT (MIPS32)
-make mips
+Define o token simbólico mínimo usado para troca entre agentes:
 
-Usar
-bash# Treinar 10.000 passos no domínio aritmético
-./melissa --train 10000
+- `glyph`: nome curto do token (`Tok-Pa`, etc.)
+- `domain`: domínio semântico (`arithmetic`, `justice`, `general`)
+- `phase`: tendência de exploração/estabilidade
+- `flux`: intensidade operacional compacta
+- `ethic`: prioridade ética normalizada
+- `context[]`: vetor ternário transportável
+- `checksum`: integridade determinística
 
-# Domínio modular, modelo salvo em melissa2.model
-./melissa --train 5000 --domain modular --model melissa2.model
+### `enochian_consensus`
 
-# Rede maior (mais expressiva, ainda leve)
-./melissa --train 20000 --dim 64 --layers 3
+Mantém até 8 votos locais e resolve um token final por maioria ponderada de:
 
-# Ver informações do modelo treinado
-./melissa --info --model melissa.model
+- glifo
+- domínio
+- afinidade ética
 
-# Log em arquivo
-./melissa --train 50000 --log treino.log
-Domínios disponíveis
-DomínioExemplo de problemaarithmeticx + 3 = 7 → x = 4modular(x + 5) mod 11 = 2 → x = 8booleanx XOR 1 = 0 → x = 1substitution3 * x mod 13 = 9 → x = 3
+Isso permite que várias interpretações locais cheguem a uma formulação comum sem bibliotecas externas nem alocação dinâmica.
 
-Consumo estimado de recursos
-ConfiguraçãoRAM do modeloRAM totalCPU 500MHz--dim 32 --layers 2 (padrão)~2 KB~1 MB~500 pass/seg--dim 64 --layers 3~12 KB~2 MB~200 pass/seg--dim 128 --layers 4~80 KB~4 MB~60 pass/seg
-Todos os cenários rodam confortavelmente em dispositivos com 1 GB de RAM.
+### `enochian_evolution`
 
-Testes
-bash# Compilar e rodar testes unitários
-gcc -Iinclude -o test_model tests/test_model.c \
-    src/melissa_model.c src/daizen.c -lm
-./test_model
+Implementa uma mutação leve baseada em LCG, útil para:
 
-# Teste de integração via Makefile
-make test
+- explorar variações semânticas de tokens
+- testar regimes de exploração frugal
+- evoluir mensagens sem custo alto de CPU
 
-Roadmap
+### `enochian_bridge`
 
- daizen_bridge.c — tradução de entradas externas (sensores, I/O) para vetores ternários
- Modo --query — consulta interativa em linguagem natural restrita
- Suporte a OpenWRT via busybox (substituir printf por fprintf portável)
- Port para ARMv5 (hardware pré-2005)
- melissa_quant.c — camadas convolucionais ternárias para reconhecimento de padrões em séries temporais
- Protocolo de comunicação peer-to-peer minimalista entre instâncias locais
+Faz a ponte entre Melissa e Enochian:
 
+- `melissa_enochian_token_from_state()` converte `TernaryModel + SelfPlayStats` em token simbólico
+- `melissa_enochian_apply_token()` traduz o token em vieses locais de exploração, justiça e sustentabilidade
+- `melissa_enochian_selfplay_consensus()` usa a telemetria de self-play para reforçar ou ajustar o consenso local
 
-Filosofia
-Melissa não é um chatbot.  Ela é um experimento em inteligência frugal:
-aprender com seus próprios problemas, sem dados externos, sem conexão, sem
-energia desperdiçada.
-O paradigma Absolute Zero adaptado aqui remove a dependência de datasets
-humanos.  Os modelos em 1.58 bits removem a dependência de hardware moderno.
-O resultado é uma IA que pode estar presente onde outras não chegam.
+## Compilar
 
-Licença
-MIT
-
----
-Como compilar
-
-No terminal MSYS2 (`MINGW64`):
+### Build padrão
 
 ```bash
-cd /c/Users/seu_usuario/melissa-core
 make
-./melissa
+```
+
+### Rodar testes
+
+```bash
+make test
+```
+
+### Compilar apenas o alvo Enochian
+
+```bash
+make enochian
+```
+
+## Exemplo conceitual de uso futuro
+
+```bash
+# Gera um token a partir de um estado Melissa
+./test_enochian
+
+# Futuro CLI proposto
+./melissa --train 10000 --domain arithmetic --model arith.model
+./melissa --enochian --model arith.model --port 8765
+./melissa --enochian --connect 127.0.0.1:8765 \
+  --send "Tok-Pa[domain=arithmetic,phase=4,flux=8,ethic=7,ctx=4,checksum=123]"
+```
+
+## Testes
+
+O arquivo `tests/test_enochian.c` valida:
+
+- geração de token a partir do estado Melissa
+- serialização e parsing determinísticos
+- consenso local
+- mutação/evolução de token
+- aplicação do token na ponte Melissa–Enochian
+
+## Filosofia
+
+Melissa não é um chatbot. Ela é um experimento em inteligência frugal: aprender com seus próprios problemas, sem dados externos, sem conexão obrigatória e sem energia desperdiçada. Este fork estende essa visão para uma comunicação peer-to-peer simbólica e ética entre instâncias locais.
+
+## Licença
+
+MIT
